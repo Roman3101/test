@@ -1,9 +1,11 @@
 function addElement() {
-	var text = document.getElementById("text");
+	var fname = document.getElementById("fname");
+	var lname = document.getElementById("lname");
 	var container = document.getElementById("container");
 	var element = document.createElement("div");
-	element.innerHTML = text.value;
+	element.innerHTML = lname.value + " " + fname.value;
 	container.appendChild(element);
 
-	text.value = "";
+	fname.value = "";
+	lname.value = "";
 }
