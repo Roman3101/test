@@ -1,9 +1,9 @@
 function addElement() {
-	var temp = document.getElementById("text");
-	var mydiv = document.getElementById("container");
-	var div = document.createElement("div");
-	div.innerHTML = temp.value;
-	mydiv.appendChild(div);
+	var text = document.getElementById("text");
+	var container = document.getElementById("container");
+	var element = document.createElement("div");
+	element.innerHTML = text.value;
+	container.appendChild(element);
 
-	temp.value = "";
+	text.value = "";
 }
