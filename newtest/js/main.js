@@ -1,9 +1,9 @@
-function myFunction() {
-	var temp = document.getElementById("text").value;
+function addElement() {
+	var temp = document.getElementById("text");
 	var mydiv = document.getElementById("container");
 	var div = document.createElement("div");
-	div.innerHTML = temp;
+	div.innerHTML = temp.value;
 	mydiv.appendChild(div);
 
-	document.getElementById("text").value = "";
+	temp.value = "";
 }
