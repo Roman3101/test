@@ -9,7 +9,6 @@ function addElement() {
 	a++;
 }
 function deleteElement(deleteElId){
-	// console.log(document.getElementById(deleteElId));
 	var element = document.getElementById(deleteElId);
 	element.remove();
 }
@@ -32,9 +31,11 @@ function renderItem(idDiv){
 	} else {
 
 		var container = document.getElementById("container");
-		var element = document.createElement("div");
 		var tempId = "reload"+a;
 
+		var element = document.createElement("div");
+		element.id = tempId;
+		
 		var fnameSpan = document.createElement("span");
 		fnameSpan.id = tempId+"fname";
 		
@@ -42,8 +43,8 @@ function renderItem(idDiv){
 		lnameSpan.id = tempId+"lname";
 
 		var deleteEl = document.createElement("button");
-		deleteEl.id = tempId;
-		deleteEl.setAttribute('onclick', 'deleteElement(this.id);');
+		deleteEl.dataset.id = tempId;
+		deleteEl.setAttribute('onclick', 'deleteElement(this.dataset.id);');
 		var textBtnDell = document.createTextNode("Delete");
 
 		var updateEl = document.createElement("button");
