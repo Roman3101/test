@@ -1,28 +1,26 @@
 var a = 1;
 function addElement() {
 
-	var fname = document.getElementById("fname");
-	var lname = document.getElementById("lname");
 	var container = document.getElementById("container");
 	var element = document.createElement("div");
+	var tempId = "reload"+a;
+
 	var fnameSpan = document.createElement("span");
-	fnameSpan.id = "reload"+a+"fname";
-	fnameSpan.innerHTML = fname.value + " ";
+	fnameSpan.id = tempId+"fname";
 	
 	var lnameSpan = document.createElement("span");
-	lnameSpan.id = "reload"+a+"lname";
-	lnameSpan.innerHTML = lname.value + " ";
+	lnameSpan.id = tempId+"lname";
 
 	var deleteEl = document.createElement("button");
-	deleteEl.id = "reload"+a;
+	deleteEl.id = tempId;
 	deleteEl.setAttribute('onclick', 'deleteElement(this.id);');
 	var textBtnDell = document.createTextNode("Delete");
 
 	var updateEl = document.createElement("button");
-	updateEl.name = "reload"+a;
+	updateEl.name = tempId;
 	updateEl.setAttribute('onclick', 'update(this.name);');
 	var textBtnUpdate = document.createTextNode("Update");
-	
+
 	deleteEl.appendChild(textBtnDell);
 	updateEl.appendChild(textBtnUpdate);
 	
@@ -33,8 +31,7 @@ function addElement() {
 	element.appendChild(updateEl);
 	container.appendChild(element);
 
-	fname.value = "";
-	lname.value = "";
+	renderItem(tempId);
 	a++;
 
 }
@@ -43,22 +40,25 @@ function deleteElement(deleteElId){
 	element.remove();
 }
 function update(updateElId){
-	document.getElementById("clickBtn").style.display = "none";
-	document.getElementById("clickBtnOk").style.display = "";
-	document.getElementById("clickBtnOk").name = updateElId;
+	document.getElementById("clickBtn").value = "Ok";
+	document.getElementById("clickBtn").onclick = completionUpdate;
+	document.getElementById("clickBtn").dataset.id = updateElId;
 	document.getElementById("fname").value = document.getElementById(updateElId + "fname").textContent;
 	document.getElementById("lname").value = document.getElementById(updateElId + "lname").textContent;
 }
 function completionUpdate(){
-	document.getElementById("clickBtn").style.display = "";
-	document.getElementById("clickBtnOk").style.display = "none";
-	var idDiv = document.getElementById("clickBtnOk").name;
-	var fname = document.getElementById("fname");
+	document.getElementById("clickBtn").value = "Add";
+	document.getElementById("clickBtn").onclick = addElement;
+	var idDiv = document.getElementById("clickBtn").dataset.id;
+	renderItem(idDiv);
+}
+ function renderItem(idDiv){
+ 	var fname = document.getElementById("fname");
 	var lname = document.getElementById("lname");
-	var divText = document.getElementById(idDiv).innerHTML;
-
-	document.getElementById(idDiv+"fname").innerHTML = fname.value + " ";
+ 	document.getElementById(idDiv+"fname").innerHTML = fname.value + " ";
 	document.getElementById(idDiv+"lname").innerHTML = lname.value + " ";
 	fname.value = "";
 	lname.value = "";
-}
+ }
+
+
