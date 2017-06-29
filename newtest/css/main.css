@@ -1,6 +1,9 @@
 div{
 	margin-top: 10px;
 }
+span{
+	margin:0px 5px;
+}
 form{
 	width: 500px;
 	border-radius: 5px;
