@@ -1,4 +1,6 @@
 var a = 1;
+var arr = [];
+
 function createDelBtn(){
 	var deleteEl = document.createElement("button");
 	deleteEl.setAttribute("onclick", "deleteElement(this.parentNode.id)");
@@ -32,41 +34,70 @@ function createDiv(id,fname,lname){
 }
 
 function addElement() {
-	var container = document.getElementById("container");
-	var clickBtn = document.getElementById("clickBtn");
-	var idDiv = clickBtn.dataset.id;
+	var hiddenInp = document.getElementById("hiddenInp");
+	var idDiv = hiddenInp.dataset.id;
 	var fname = document.getElementById("fname");
 	var lname = document.getElementById("lname");
 
 	if(!idDiv){
 		var tempId = "reload"+a;
-		var element = createDiv(tempId,fname.value,lname.value);
-		container.appendChild(element);
+		arr.push(
+			{
+				id: tempId,
+				fname: fname.value,
+				lname: lname.value
+			}
+		);
 		a++;
 	} else {
-		container.replaceChild(createDiv(idDiv,fname.value,lname.value), document.getElementById(idDiv));
+		var index = indexID(idDiv,arr);
+		arr[index] = {
+			id: idDiv,
+			fname: fname.value,
+			lname: lname.value
+		}
 	}
-		clearForm();
-	
+	reRendeContainer();
+	clearForm();
 }
 
 function clearForm(){
 	document.getElementById("fname").value = "";
 	document.getElementById("lname").value = "";
 	document.getElementById("clickBtn").value = "Add";
-	clickBtn.dataset.id = "";
+	hiddenInp.dataset.id = "";
 }
 
 function update(updateElId){
+	var index = indexID(updateElId,arr);
 	var clickBtn = document.getElementById("clickBtn");
+	var hiddenInp = document.getElementById("hiddenInp");
 	clickBtn.value = "Ok";
-	clickBtn.dataset.id = updateElId;
+	hiddenInp.dataset.id = updateElId;
 	document.getElementById(updateElId).style.backgroundColor = "red";
-	document.getElementById("fname").value = document.getElementById(updateElId).childNodes[0].textContent;
-	document.getElementById("lname").value = document.getElementById(updateElId).childNodes[1].textContent;
+	document.getElementById("fname").value = arr[index].fname;
+	document.getElementById("lname").value = arr[index].lname;
 }
 function deleteElement(deleteElId){
-	var element = document.getElementById(deleteElId);
-	element.remove();
+	var index = indexID(deleteElId,arr);
+	arr.splice(index,1);
+	reRendeContainer();
 }
 
+function indexID(id,arr){
+	for(var i = 0; i < arr.length; i++){
+		if(arr[i].id == id){
+			return i
+		}
+	}
+}
+
+function reRendeContainer(){
+	var container = document.getElementById("container");
+	container.innerHTML = "";
+	for(var i = 0; i < arr.length; i++){
+			var obj = arr[i];
+			var element = createDiv(obj.id,obj.fname,obj.lname);
+			container.appendChild(element);
+		}
+}
