@@ -1,45 +1,28 @@
-var a = 1;
-var arr = [];
+if(JSON.parse(localStorage.getItem("names")).length > 0){
+	var arr = JSON.parse(localStorage.getItem("names"));
+	var a = JSON.parse(localStorage.getItem("a"));
+} else {
+	var arr = [];
+	a = 1;
+	}
 
-function createDelBtn(){
-	var deleteEl = document.createElement("button");
-	deleteEl.setAttribute("onclick", "deleteElement(this.parentNode.id)");
-	var textBtnDell = document.createTextNode("Delete");
-	deleteEl.appendChild(textBtnDell);
-	return deleteEl
-}
+	var source = document.getElementById("formTemplate").innerHTML;
+	var template = Handlebars.compile(source);
+	var html = template();
+	console.log(html);
+	document.body.innerHTML += html;
+	console.log(a);
 
-function createUpdBtn(){
-	var updateEl = document.createElement("button");
-	updateEl.setAttribute("onclick", "update(this.parentNode.id)");
-	var textBtnUpdate = document.createTextNode("Update");
-	updateEl.appendChild(textBtnUpdate);
-	return updateEl
-}
 
-function createNameSpan(text){
-	var nameSpan = document.createElement("span");
-	nameSpan.innerHTML = text;
-	return nameSpan
-}
-
-function createDiv(id,fname,lname){
-	var element = document.createElement("div");
-	element.id = id;
-	element.appendChild(createNameSpan(fname));
-	element.appendChild(createNameSpan(lname));
-	element.appendChild(createDelBtn());
-	element.appendChild(createUpdBtn());
-	return element
-}
-
+reRenderContainer();
 function addElement() {
-	var hiddenInp = document.getElementById("hiddenInp");
-	var idDiv = hiddenInp.dataset.id;
+	var idHidenInp = document.getElementById("idHidenInp");
+	var idDiv = idHidenInp.dataset.id;
 	var fname = document.getElementById("fname");
 	var lname = document.getElementById("lname");
 
 	if(!idDiv){
+		
 		var tempId = "reload"+a;
 		arr.push(
 			{
@@ -57,6 +40,8 @@ function addElement() {
 			lname: lname.value
 		}
 	}
+	localStorage.setItem("names", JSON.stringify(arr));
+	localStorage.setItem("a", JSON.stringify(a));
 	reRenderContainer();
 	clearForm();
 
@@ -66,22 +51,26 @@ function clearForm(){
 	document.getElementById("fname").value = "";
 	document.getElementById("lname").value = "";
 	document.getElementById("clickBtn").value = "Add";
-	hiddenInp.dataset.id = "";
+	document.getElementById("idHidenInp").dataset.id = "";
 }
 
 function update(updateElId){
 	var index = indexID(updateElId,arr);
 	var clickBtn = document.getElementById("clickBtn");
-	var hiddenInp = document.getElementById("hiddenInp");
+	var idHidenInp = document.getElementById("idHidenInp");
 	clickBtn.value = "Ok";
-	hiddenInp.dataset.id = updateElId;
-	document.getElementById(updateElId).style.backgroundColor = "red";
+	idHidenInp.dataset.id = updateElId;
 	document.getElementById("fname").value = arr[index].fname;
 	document.getElementById("lname").value = arr[index].lname;
+
+	checkColorUpd(updateElId);
 }
+
+
 function deleteElement(deleteElId){
-	var index = indexID(deleteElId,arr);
-	arr.splice(index,1);
+	var index = indexID(deleteElId , arr);
+	arr.splice(index , 1);
+	localStorage.setItem("names", JSON.stringify(arr));
 	reRenderContainer();
 }
 
@@ -94,33 +83,11 @@ function indexID(id,arr){
 }
 
 function reRenderContainer(){
-	// var container = document.getElementById("container");
-	// container.innerHTML = "";
-	// for(var i = 0; i < arr.length; i++){
-	// 		var obj = arr[i];
-	// 		var element = createDiv(obj.id,obj.fname,obj.lname);
-	// 		container.appendChild(element);
-	// 	}
-var source   = document.getElementById("text-template").innerHTML;
+	var source = document.getElementById("containerTemplate").innerHTML;
 	var template = Handlebars.compile(source);
-
-	var data = {
-		arr: arr,
-	};
-
-	var html = template(data);
-	// console.log(arr);
+	var storedgeNamesArr = JSON.parse(localStorage.getItem("names"));
+	var html = template({arr:storedgeNamesArr});
 	document.getElementById("container").innerHTML = html;
-
-
-	// document.getElementById('container1').innerHTML = "";
-	// for(var i = 0; i < arr.length; i++){
-	// 	console.log(arr[i]);
-	// 	var html = template(arr[i]);
-	// 	console.log(html);
-	// 	document.getElementById('container1').innerHTML += html;
-	// }
-
 }
 
 

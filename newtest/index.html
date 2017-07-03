@@ -4,41 +4,39 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="css/main.css">
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
 
-	<script id="text-template" type="text/x-handlebars-template">
-	{{#each arr}}
-		<div id="{{this.id}}">
-			<span>{{this.fname}}</span>
-			<span>{{this.lname}}</span>
-			<button onclick="deleteElement(this.parentNode.id)">Delete</button>
-			<button onclick="update(this.parentNode.id)">Update</button>
-		</div>
-	{{/each}}
-</script>
+	<script id="containerTemplate" type="text/x-handlebars-template">
+		{{#each arr}}
+			<div id="{{this.id}}">
+				<span>{{this.fname}}</span>
+				<span>{{this.lname}}</span>
+				<button onclick="deleteElement(this.parentNode.id)">Delete</button>
+				<button onclick="update(this.parentNode.id)">Update</button>
+			</div>
+		{{/each}}
+	</script>
+	<script id="formTemplate" type="text/x-handlebars-template">
+		<form action="">
+			<input type="text" hidden="true" id="idHidenInp">
+			<div>
+				<label for="fname">First name</label>
+				<input type="text"  id="fname" placeholder="Your first name..">
+			</div>
+			<div>
+				<label for="lname">Last Name</label>
+				<input type="text"  id="lname" placeholder="Your last name..">
+			</div>
+			<div>
+				<input type="button" value="Add" id="clickBtn" onclick="addElement()"></input>
+			</div>
+		</form>
+		<div id="container"></div>
+	</script>
 
 </head>
 <body>
-	<form action="">
-		<div>
-			<label for="fname">First name</label>
-			<input type="text"  id="fname" placeholder="Your first name..">
-		</div>
-		<div>
-			<label for="lname">Last Name</label>
-			<input type="text"  id="lname" placeholder="Your last name..">
-		</div>
-		<input type="text" hidden="true" id="hiddenInp">
-		<div>
-			<input type="button" value="Add" id="clickBtn" onclick="addElement()"></input>
-		</div>
-		
-		
-	</form>
-	<div id="container"></div>
-
-
 	<script src="js/main.js"></script>
-
 </body>
 </html>
