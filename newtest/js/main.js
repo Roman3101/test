@@ -57,8 +57,9 @@ function addElement() {
 			lname: lname.value
 		}
 	}
-	reRendeContainer();
+	reRenderContainer();
 	clearForm();
+
 }
 
 function clearForm(){
@@ -81,7 +82,7 @@ function update(updateElId){
 function deleteElement(deleteElId){
 	var index = indexID(deleteElId,arr);
 	arr.splice(index,1);
-	reRendeContainer();
+	reRenderContainer();
 }
 
 function indexID(id,arr){
@@ -92,12 +93,34 @@ function indexID(id,arr){
 	}
 }
 
-function reRendeContainer(){
-	var container = document.getElementById("container");
-	container.innerHTML = "";
-	for(var i = 0; i < arr.length; i++){
-			var obj = arr[i];
-			var element = createDiv(obj.id,obj.fname,obj.lname);
-			container.appendChild(element);
-		}
+function reRenderContainer(){
+	// var container = document.getElementById("container");
+	// container.innerHTML = "";
+	// for(var i = 0; i < arr.length; i++){
+	// 		var obj = arr[i];
+	// 		var element = createDiv(obj.id,obj.fname,obj.lname);
+	// 		container.appendChild(element);
+	// 	}
+var source   = document.getElementById("text-template").innerHTML;
+	var template = Handlebars.compile(source);
+
+	var data = {
+		arr: arr,
+	};
+
+	var html = template(data);
+	// console.log(arr);
+	document.getElementById("container").innerHTML = html;
+
+
+	// document.getElementById('container1').innerHTML = "";
+	// for(var i = 0; i < arr.length; i++){
+	// 	console.log(arr[i]);
+	// 	var html = template(arr[i]);
+	// 	console.log(html);
+	// 	document.getElementById('container1').innerHTML += html;
+	// }
+
 }
+
+
