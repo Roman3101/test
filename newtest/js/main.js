@@ -1,20 +1,18 @@
-if(JSON.parse(localStorage.getItem("names")).length > 0){
-	var arr = JSON.parse(localStorage.getItem("names"));
-	var a = JSON.parse(localStorage.getItem("a"));
+
+if(JSON.parse(localStorage.getItem("keyArr")) != null){
+	var arr = JSON.parse(localStorage.getItem("keyArr"));
+	if(localStorage.getItem("keyArr").length > 2 ){
+		var a = localStorage.getItem("a");
+	} else var a = 1;
+	
 } else {
 	var arr = [];
-	a = 1;
-	}
+	var a = 1;
+}
 
-	var source = document.getElementById("formTemplate").innerHTML;
-	var template = Handlebars.compile(source);
-	var html = template();
-	console.log(html);
-	document.body.innerHTML += html;
-	console.log(a);
-
-
+renderForm();
 reRenderContainer();
+
 function addElement() {
 	var idHidenInp = document.getElementById("idHidenInp");
 	var idDiv = idHidenInp.dataset.id;
@@ -40,18 +38,11 @@ function addElement() {
 			lname: lname.value
 		}
 	}
-	localStorage.setItem("names", JSON.stringify(arr));
-	localStorage.setItem("a", JSON.stringify(a));
+	localStorage.setItem("keyArr", JSON.stringify(arr));
+	localStorage.setItem("a", a);
+	renderForm();
 	reRenderContainer();
-	clearForm();
 
-}
-
-function clearForm(){
-	document.getElementById("fname").value = "";
-	document.getElementById("lname").value = "";
-	document.getElementById("clickBtn").value = "Add";
-	document.getElementById("idHidenInp").dataset.id = "";
 }
 
 function update(updateElId){
@@ -62,15 +53,16 @@ function update(updateElId){
 	idHidenInp.dataset.id = updateElId;
 	document.getElementById("fname").value = arr[index].fname;
 	document.getElementById("lname").value = arr[index].lname;
-
-	checkColorUpd(updateElId);
+	
+	reRenderContainer();
+	document.getElementById(updateElId).style.backgroundColor = "red";
 }
-
 
 function deleteElement(deleteElId){
 	var index = indexID(deleteElId , arr);
 	arr.splice(index , 1);
-	localStorage.setItem("names", JSON.stringify(arr));
+	localStorage.setItem("keyArr", JSON.stringify(arr));
+	renderForm();
 	reRenderContainer();
 }
 
@@ -85,9 +77,14 @@ function indexID(id,arr){
 function reRenderContainer(){
 	var source = document.getElementById("containerTemplate").innerHTML;
 	var template = Handlebars.compile(source);
-	var storedgeNamesArr = JSON.parse(localStorage.getItem("names"));
+	var storedgeNamesArr = JSON.parse(localStorage.getItem("keyArr"));
 	var html = template({arr:storedgeNamesArr});
 	document.getElementById("container").innerHTML = html;
 }
 
-
+function renderForm(){
+	var source = document.getElementById("formTemplate").innerHTML;
+	var template = Handlebars.compile(source);
+	var html = template();
+	document.body.innerHTML = html;
+}
