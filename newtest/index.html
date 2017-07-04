@@ -10,20 +10,20 @@
 	
 	<script id="formTemplate" type="text/x-handlebars-template">
 		<form action="">
-			<input type="text" hidden="true" id="idHidenInp">
+			<input type="text" hidden="true" id="id">
 			<div>
 				<label for="fname">First name</label>
-				<input type="text"  id="fname" placeholder="Your first name..">
+				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}">
 			</div>
 			<div>
 				<label for="lname">Last Name</label>
-				<input type="text"  id="lname" placeholder="Your last name..">
+				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}">
 			</div>
 			<div>
 				<input type="button" value="Add" id="clickBtn" onclick="addElement()"></input>
 			</div>
 		</form>
-		<div id="container"></div>
+		
 	</script>
 
 	<script id="containerTemplate" type="text/x-handlebars-template">
@@ -39,5 +39,7 @@
 	
 </head>
 <body>
+	<div id="form"></div>
+	<div id="container"></div>
 </body>
 </html>
