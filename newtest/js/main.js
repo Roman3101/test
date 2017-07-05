@@ -1,10 +1,16 @@
  // localStorage.clear();
 var tempId;
-var arr = JSON.parse(localStorage.getItem("keyArr"));
+var arr = JSON.parse(localStorage.getItem("array"));
 var counter = localStorage.getItem("counter");
 
+var sourceForm = document.getElementById("formTemplate").innerHTML;
+var templateForm = Handlebars.compile(sourceForm);
+
+var sourceContainer = document.getElementById("containerTemplate").innerHTML;
+var templateContainer = Handlebars.compile(sourceContainer);
+
 if(arr == null){
-	var arr = [];	
+	var arr = [];
 }
 if(arr.length == 0 ){
 		var counter = 1;
@@ -14,12 +20,11 @@ reRenderContainer();
 
 function addElement() {
 	var idHidenInp = document.getElementById("id");
-	var id = idHidenInp.dataset.id;
+	var id = idHidenInp.value;
 	var fname = document.getElementById("fname");
 	var lname = document.getElementById("lname");
 
 	if(!id){
-		
 		tempId = "reload"+counter;
 		arr.push(
 			{
@@ -37,7 +42,7 @@ function addElement() {
 			lname: lname.value
 		}
 	}
-	localStorage.setItem("keyArr", JSON.stringify(arr));
+	localStorage.setItem("array", JSON.stringify(arr));
 	localStorage.setItem("counter", counter);
 	renderForm();
 	reRenderContainer();
@@ -51,8 +56,8 @@ function update(updateElId){
 	var clickBtn = document.getElementById("clickBtn");
 	var idHidenInp = document.getElementById("id");
 	clickBtn.value = "Ok";
-	idHidenInp.dataset.id = updateElId;
-	
+	idHidenInp.value = updateElId;
+
 	reRenderContainer();
 	document.getElementById(updateElId).style.backgroundColor = "red";
 }
@@ -60,7 +65,7 @@ function update(updateElId){
 function deleteElement(deleteElId){
 	var index = indexID(deleteElId , arr);
 	arr.splice(index , 1);
-	localStorage.setItem("keyArr", JSON.stringify(arr));
+	localStorage.setItem("array", JSON.stringify(arr));
 	renderForm();
 	reRenderContainer();
 }
@@ -73,16 +78,13 @@ function indexID(id,arr){
 	}
 }
 
+function renderForm(obj){
+	var html = templateForm(obj);
+	document.getElementById("form").innerHTML = html;
+}
+
 function reRenderContainer(){
-	var source = document.getElementById("containerTemplate").innerHTML;
-	var template = Handlebars.compile(source);
-	var html = template({arr:arr});
+	var html = templateContainer({arr:arr});
 	document.getElementById("container").innerHTML = html;
 }
 
-function renderForm(obj){
-	var source = document.getElementById("formTemplate").innerHTML;
-	var template = Handlebars.compile(source);
-	var html = template(obj);
-	document.getElementById("form").innerHTML = html;
-}
