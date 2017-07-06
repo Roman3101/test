@@ -1,5 +1,6 @@
  // localStorage.clear();
 var tempId;
+var index;
 var arr = JSON.parse(localStorage.getItem("array"));
 var counter = localStorage.getItem("counter");
 
@@ -10,17 +11,15 @@ var sourceContainer = document.getElementById("containerTemplate").innerHTML;
 var templateContainer = Handlebars.compile(sourceContainer);
 
 if(arr == null){
-	var arr = [];
+	arr = [];
 }
 if(arr.length == 0 ){
-		var counter = 1;
+	counter = 1;
 }
 renderForm();
-reRenderContainer();
 
 function addElement() {
-	var idHidenInp = document.getElementById("id");
-	var id = idHidenInp.value;
+	var id = document.getElementById("id").value;
 	var fname = document.getElementById("fname");
 	var lname = document.getElementById("lname");
 
@@ -35,7 +34,7 @@ function addElement() {
 		);
 		counter++;
 	} else {
-		var index = indexID(id,arr);
+		index = indexID(id,arr);
 		arr[index] = {
 			id: id,
 			fname: fname.value,
@@ -45,28 +44,19 @@ function addElement() {
 	localStorage.setItem("array", JSON.stringify(arr));
 	localStorage.setItem("counter", counter);
 	renderForm();
-	reRenderContainer();
-
 }
 
 function update(updateElId){
-	var index = indexID(updateElId,arr);
-	arr[index].bname = "ok";
+	index = indexID(updateElId,arr);
 	renderForm(arr[index]);
-
-	var clickBtn = document.getElementById("clickBtn");
-	var idHidenInp = document.getElementById("id");
-
-	reRenderContainer();
 	document.getElementById(updateElId).style.backgroundColor = "red";
 }
 
 function deleteElement(deleteElId){
-	var index = indexID(deleteElId , arr);
+	index = indexID(deleteElId , arr);
 	arr.splice(index , 1);
 	localStorage.setItem("array", JSON.stringify(arr));
 	renderForm();
-	reRenderContainer();
 }
 
 function indexID(id,arr){
@@ -80,6 +70,7 @@ function indexID(id,arr){
 function renderForm(obj){
 	var html = templateForm(obj);
 	document.getElementById("form").innerHTML = html;
+	reRenderContainer();
 }
 
 function reRenderContainer(){
