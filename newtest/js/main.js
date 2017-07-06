@@ -25,7 +25,7 @@ function addElement() {
 	var lname = document.getElementById("lname");
 
 	if(!id){
-		tempId = "reload"+counter;
+		tempId = counter;
 		arr.push(
 			{
 				id: tempId,
@@ -51,12 +51,11 @@ function addElement() {
 
 function update(updateElId){
 	var index = indexID(updateElId,arr);
+	arr[index].bname = "ok";
 	renderForm(arr[index]);
 
 	var clickBtn = document.getElementById("clickBtn");
 	var idHidenInp = document.getElementById("id");
-	clickBtn.value = "Ok";
-	idHidenInp.value = updateElId;
 
 	reRenderContainer();
 	document.getElementById(updateElId).style.backgroundColor = "red";

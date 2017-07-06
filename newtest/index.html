@@ -10,7 +10,7 @@
 	
 	<script id="formTemplate" type="text/x-handlebars-template">
 		<form action="">
-			<input type="text" hidden="true" id="id">
+			<input type="text" hidden="true" id="id" value="{{id}}">
 			<div>
 				<label for="fname">First name</label>
 				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}">
@@ -20,7 +20,11 @@
 				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}">
 			</div>
 			<div>
-				<input type="button" value="Add" id="clickBtn" onclick="addElement()"></input>
+				{{#if bname}}
+					<input type="button" value="{{bname}}" id="clickBtn" onclick="addElement()"></input>
+				{{else}}
+					<input type="button" value="Add" id="clickBtn" onclick="addElement()"></input>
+				{{/if}}
 			</div>
 		</form>
 		
