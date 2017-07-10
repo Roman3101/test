@@ -1,62 +1,51 @@
  // localStorage.clear();
-var tempId;
-var index;
-var arr = JSON.parse(localStorage.getItem("array"));
-var counter = localStorage.getItem("counter");
+var arr = [];
 
-var sourceForm = document.getElementById("formTemplate").innerHTML;
-var templateForm = Handlebars.compile(sourceForm);
-
-var sourceContainer = document.getElementById("containerTemplate").innerHTML;
-var templateContainer = Handlebars.compile(sourceContainer);
-
-if(arr == null){
-	arr = [];
+if (JSON.parse(localStorage.getItem("array")).length > 0) {
+	arr = JSON.parse(localStorage.getItem("array"));
+	var counter = +arr[arr.length-1].id + 1;
+} else {
+	var counter = 1;
 }
-if(arr.length == 0 ){
-	counter = 1;
-}
-renderForm();
+
+reRenderForm();
+reRenderContainer();
 
 function addElement() {
 	var id = document.getElementById("id").value;
-	var fname = document.getElementById("fname");
-	var lname = document.getElementById("lname");
+	var fname = document.getElementById("fname").value;
+	var lname = document.getElementById("lname").value;
 
 	if(!id){
-		tempId = counter;
-		arr.push(
-			{
-				id: tempId,
-				fname: fname.value,
-				lname: lname.value
-			}
-		);
+		var tempId = counter;
+		arr.push({id: tempId,
+				fname: fname,
+				lname: lname});
 		counter++;
 	} else {
-		index = indexID(id,arr);
-		arr[index] = {
-			id: id,
-			fname: fname.value,
-			lname: lname.value
-		}
+		var index = indexID(id,arr);
+		arr[index] = {id: id,
+			fname: fname,
+			lname: lname}
 	}
 	localStorage.setItem("array", JSON.stringify(arr));
-	localStorage.setItem("counter", counter);
-	renderForm();
+	reRenderForm();
+	reRenderContainer();
 }
 
 function update(updateElId){
-	index = indexID(updateElId,arr);
-	renderForm(arr[index]);
-	document.getElementById(updateElId).style.backgroundColor = "red";
+	var index = indexID(updateElId,arr);
+	reRenderForm(arr[index]);
+	reRenderContainer(updateElId);
+	
 }
 
 function deleteElement(deleteElId){
-	index = indexID(deleteElId , arr);
+	var index = indexID(deleteElId , arr);
 	arr.splice(index , 1);
 	localStorage.setItem("array", JSON.stringify(arr));
-	renderForm();
+	reRenderForm();
+	reRenderContainer();
 }
 
 function indexID(id,arr){
@@ -67,14 +56,24 @@ function indexID(id,arr){
 	}
 }
 
-function renderForm(obj){
-	var html = templateForm(obj);
-	document.getElementById("form").innerHTML = html;
-	reRenderContainer();
+function templateSource(id){
+	var source = document.getElementById(id).innerHTML;
+	var template = Handlebars.compile(source);
+	return template
 }
 
-function reRenderContainer(){
-	var html = templateContainer({arr:arr});
+function reRenderForm(obj){
+	var template = templateSource("formTemplate");
+	var html = template(obj);
+	document.getElementById("form").innerHTML = html;
+}
+
+function reRenderContainer(updateElId){
+	var template = templateSource("containerTemplate");
+	var html = template({arr:arr});
 	document.getElementById("container").innerHTML = html;
+	if (updateElId) {
+		document.getElementById(updateElId).style.backgroundColor = "red";
+	}
 }
 
