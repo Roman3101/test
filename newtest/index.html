@@ -20,7 +20,7 @@
 				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}"></input>
 			</div>
 			<div>
-				<input type="button" {{#if id}} value="Ok" {{else}} value="Add" {{/if}} id="clickBtn" onclick="addElement()"></input>
+				<input type="button"  value="{{#if id}} Ok {{else}}  Add  {{/if}}"  id="clickBtn" onclick="addElement()"></input>
 			</div>
 		</form>
 		
@@ -34,12 +34,20 @@
 				<button onclick="deleteElement({{this.id}})">Delete</button>
 				<button onclick="update({{this.id}})">Update</button>
 			</div>
+		
 		{{/each}}
+			
+	</script>
+	<script id="containerT" type="text/x-handlebars-template">
+			{{#each pgArray}}
+			<button onclick="reRenderContainer({{this}}-1)">{{this}}</button>
+			{{/each}}
 	</script>
 	
 </head>
 <body>
 	<div id="form"></div>
 	<div id="container"></div>
+	<div id="container1"></div>
 </body>
 </html>

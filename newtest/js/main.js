@@ -1,7 +1,7 @@
- // localStorage.clear();
+// localStorage.clear();
 var arr = [];
 
-if (JSON.parse(localStorage.getItem("array")).length > 0) {
+if (localStorage.getItem("array") && localStorage.getItem("array").length > 2) {
 	arr = JSON.parse(localStorage.getItem("array"));
 	var counter = +arr[arr.length-1].id + 1;
 } else {
@@ -9,7 +9,7 @@ if (JSON.parse(localStorage.getItem("array")).length > 0) {
 }
 
 reRenderForm();
-reRenderContainer();
+reRenderContainer(0);
 
 function addElement() {
 	var id = document.getElementById("id").value;
@@ -30,14 +30,16 @@ function addElement() {
 	}
 	localStorage.setItem("array", JSON.stringify(arr));
 	reRenderForm();
-	reRenderContainer();
+	// var n = ~~number();
+	reRenderContainer(number()-1);
 }
 
 function update(updateElId){
 	var index = indexID(updateElId,arr);
 	reRenderForm(arr[index]);
 	reRenderContainer(updateElId);
-	
+	reRenderContainer(number()-1);
+	document.getElementById(updateElId).style.backgroundColor = "red";
 }
 
 function deleteElement(deleteElId){
@@ -45,7 +47,7 @@ function deleteElement(deleteElId){
 	arr.splice(index , 1);
 	localStorage.setItem("array", JSON.stringify(arr));
 	reRenderForm();
-	reRenderContainer();
+	reRenderContainer(number()-1);
 }
 
 function indexID(id,arr){
@@ -68,12 +70,30 @@ function reRenderForm(obj){
 	document.getElementById("form").innerHTML = html;
 }
 
+function number(){
+	var pgArray = [];
+	var quantityPages = Math.ceil(arr.length/5);
+	for (var i = 1; i <= quantityPages; i++) {
+		pgArray.push(i);
+	}
+	var template = templateSource("containerT");
+	var html = template({pgArray:pgArray});
+	document.getElementById("container1").innerHTML = html;
+	return quantityPages
+}
+
 function reRenderContainer(updateElId){
 	var template = templateSource("containerTemplate");
-	var html = template({arr:arr});
-	document.getElementById("container").innerHTML = html;
-	if (updateElId) {
-		document.getElementById(updateElId).style.backgroundColor = "red";
+	var showArr=[];
+
+	for (var i = 0+5*updateElId; i < 5+5*updateElId; i++) {
+		if(arr[i]){
+			showArr.push(arr[i]);
+		}
 	}
+	var html = template({arr:showArr});
+	document.getElementById("container").innerHTML = html;
+	
+	number();
 }
 
