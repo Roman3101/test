@@ -21,7 +21,9 @@ function addElement() {
 		arr.push({id: tempId,
 				fname: fname,
 				lname: lname});
+		var index = indexID(counter , arr);
 		counter++;
+		
 	} else {
 		var index = indexID(id,arr);
 		arr[index] = {id: id,
@@ -30,31 +32,27 @@ function addElement() {
 	}
 	localStorage.setItem("array", JSON.stringify(arr));
 	reRenderForm();
-	// var n = ~~number();
-	reRenderContainer(number()-1);
+	reRenderContainer(activPg(index));
 }
 
 function update(updateElId){
 	var index = indexID(updateElId,arr);
 	reRenderForm(arr[index]);
-	reRenderContainer(updateElId);
-	reRenderContainer(number()-1);
+	reRenderContainer(activPg(index));
 	document.getElementById(updateElId).style.backgroundColor = "red";
 }
 
 function deleteElement(deleteElId){
 	var index = indexID(deleteElId , arr);
+	var numberPg = document.getElementById("id").dataset.number;
 	arr.splice(index , 1);
 	localStorage.setItem("array", JSON.stringify(arr));
 	reRenderForm();
-	reRenderContainer(number()-1);
-}
 
-function indexID(id,arr){
-	for(var i = 0; i < arr.length; i++){
-		if(arr[i].id == id){
-			return i
-		}
+	if(activPg(index) == totalNumber() && activPg(index) != 0){
+		reRenderContainer(activPg(index)-1);
+	} else {
+		reRenderContainer(activPg(index));
 	}
 }
 
@@ -70,15 +68,28 @@ function reRenderForm(obj){
 	document.getElementById("form").innerHTML = html;
 }
 
-function number(){
+function activPg(index){
+	var temp = index/5;
+	return ~~temp
+}
+
+function indexID(id,arr){
+	for(var i = 0; i < arr.length; i++){
+		if(arr[i].id == id){
+			return i
+		}
+	}
+}
+
+function totalNumber(){
 	var pgArray = [];
 	var quantityPages = Math.ceil(arr.length/5);
 	for (var i = 1; i <= quantityPages; i++) {
 		pgArray.push(i);
 	}
-	var template = templateSource("containerT");
+	var template = templateSource("pagingTemplate");
 	var html = template({pgArray:pgArray});
-	document.getElementById("container1").innerHTML = html;
+	document.getElementById("pagingСontainer").innerHTML = html;
 	return quantityPages
 }
 
@@ -94,6 +105,6 @@ function reRenderContainer(updateElId){
 	var html = template({arr:showArr});
 	document.getElementById("container").innerHTML = html;
 	
-	number();
+	totalNumber();
+	document.getElementById(updateElId+1+"pg").style.backgroundColor = "gray";
 }
-

@@ -34,20 +34,21 @@
 				<button onclick="deleteElement({{this.id}})">Delete</button>
 				<button onclick="update({{this.id}})">Update</button>
 			</div>
-		
 		{{/each}}
 			
 	</script>
-	<script id="containerT" type="text/x-handlebars-template">
-			{{#each pgArray}}
-			<button onclick="reRenderContainer({{this}}-1)">{{this}}</button>
-			{{/each}}
+	<script id="pagingTemplate" type="text/x-handlebars-template">
+			<div>
+				{{#each pgArray}}
+					<button id="{{this}}pg" onclick="reRenderContainer({{this}}-1)">{{this}}</button>
+				{{/each}}
+			</div>
 	</script>
 	
 </head>
 <body>
 	<div id="form"></div>
 	<div id="container"></div>
-	<div id="container1"></div>
+	<div id="pagingСontainer"></div>
 </body>
 </html>
