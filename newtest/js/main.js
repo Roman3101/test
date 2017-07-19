@@ -1,7 +1,7 @@
 // localStorage.clear();
 var arr = [];
 
-if (localStorage.getItem("array") && localStorage.getItem("array").length > 2) {
+if (localStorage.getItem("array") && localStorage.getItem("array") != "[]") {
 	arr = JSON.parse(localStorage.getItem("array"));
 	var counter = +arr[arr.length-1].id + 1;
 } else {
@@ -29,17 +29,23 @@ function addElement() {
 		arr[index] = {id: id,
 			fname: fname,
 			lname: lname}
+	console.log(arr[index]);
+
 	}
 	localStorage.setItem("array", JSON.stringify(arr));
 	reRenderForm();
-	reRenderContainer(activPg(index));
+	reRenderContainer(arr[index]);
 }
 
 function update(updateElId){
 	var index = indexID(updateElId,arr);
+	arr[index].bgColor = true;
+	console.log(arr[index]);
 	reRenderForm(arr[index]);
 	reRenderContainer(activPg(index));
-	document.getElementById(updateElId).style.backgroundColor = "red";
+	arr[index].bgColor = "";
+
+	// document.getElementById(updateElId).style.backgroundColor = "red";
 }
 
 function deleteElement(deleteElId){
@@ -94,6 +100,8 @@ function totalNumber(){
 }
 
 function reRenderContainer(updateElId){
+	
+	updateElId ;
 	var template = templateSource("containerTemplate");
 	var showArr=[];
 
@@ -106,5 +114,5 @@ function reRenderContainer(updateElId){
 	document.getElementById("container").innerHTML = html;
 	
 	totalNumber();
-	document.getElementById(updateElId+1+"pg").style.backgroundColor = "gray";
+	// document.getElementById(updateElId+1+"pg").style.backgroundColor = "gray";
 }

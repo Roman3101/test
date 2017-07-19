@@ -28,7 +28,7 @@
 
 	<script id="containerTemplate" type="text/x-handlebars-template">
 		{{#each arr}}
-			<div id="{{this.id}}">
+			<div id="{{this.id}}" style="{{#if bgColor}} background-color: red {{/if}}">
 				<span>{{this.fname}}</span>
 				<span>{{this.lname}}</span>
 				<button onclick="deleteElement({{this.id}})">Delete</button>
