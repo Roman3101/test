@@ -9,15 +9,13 @@ if (localStorage.getItem("array") && localStorage.getItem("array") != "[]") {
 }
 
 reRenderForm();
-reRenderContainer(0);
+reRenderContainer(arr[0]);
 
 function addElement() {
 	var id = document.getElementById("id").value;
 	var fname = document.getElementById("fname").value;
 	var lname = document.getElementById("lname").value;
 	
-// if(fname.length >= 2 && lname.length >= 3){
-	console.log(fname.length);
 	if(!id){
 		var tempId = counter;
 		arr.push({id: tempId,
@@ -31,32 +29,31 @@ function addElement() {
 		arr[index] = {id: id,
 			fname: fname,
 			lname: lname}
+
 	}
 	localStorage.setItem("array", JSON.stringify(arr));
 	reRenderForm();
-	reRenderContainer(activPg(index));
-// } 
+	reRenderContainer(arr[index]);
 }
 
 function update(updateElId){
 	var index = indexID(updateElId,arr);
+	arr[index].bgColor = true;
 	reRenderForm(arr[index]);
-	reRenderContainer(activPg(index));
-	document.getElementById(updateElId).style.backgroundColor = "red";
+	reRenderContainer(arr[index]);
+	arr[index].bgColor = "";
 }
 
 function deleteElement(deleteElId){
 	var index = indexID(deleteElId , arr);
-	var numberPg = document.getElementById("id").dataset.number;
+	if(arr[index+1]){
+		var temp = arr[index+1];
+	} else {
+		var temp = arr[index-1];
+	}
 	arr.splice(index , 1);
 	localStorage.setItem("array", JSON.stringify(arr));
-	reRenderForm();
-
-	if(activPg(index) == totalNumber() && activPg(index) != 0){
-		reRenderContainer(activPg(index)-1);
-	} else {
-		reRenderContainer(activPg(index));
-	}
+	reRenderContainer(temp);	
 }
 
 function templateSource(id){
@@ -93,21 +90,28 @@ function totalNumber(){
 	var template = templateSource("pagingTemplate");
 	var html = template({pgArray:pgArray});
 	document.getElementById("pagingСontainer").innerHTML = html;
-	return quantityPages
 }
 
 function reRenderContainer(updateElId){
 	var template = templateSource("containerTemplate");
-	var showArr=[];
-
-	for (var i = 0+5*updateElId; i < 5+5*updateElId; i++) {
-		if(arr[i]){
-			showArr.push(arr[i]);
-		}
-	}
-	var html = template({arr:showArr});
-	document.getElementById("container").innerHTML = html;
 	
-	totalNumber();
-	// document.getElementById(updateElId+1+"pg").style.backgroundColor = "gray";
+	if(updateElId){
+		var index = indexID(updateElId.id , arr);
+		var showArr=[];
+
+		for (var i = 0+5*activPg(indexID(updateElId.id , arr)); i < 5+5*activPg(indexID(updateElId.id , arr)); i++) {
+			if(arr[i]){
+				showArr.push(arr[i]);
+			}
+		}
+		var html = template({arr:showArr});
+		document.getElementById("container").innerHTML = html;
+		
+		totalNumber();
+		document.getElementById(activPg(indexID(updateElId.id , arr))+1+"pg").style.backgroundColor = "gray";
+	} else {
+		var html = template({arr:arr});
+		document.getElementById("container").innerHTML = html;
+		totalNumber();
+	}
 }
