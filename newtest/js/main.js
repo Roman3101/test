@@ -15,25 +15,28 @@ function addElement() {
 	var id = document.getElementById("id").value;
 	var fname = document.getElementById("fname").value;
 	var lname = document.getElementById("lname").value;
-	
-	if(!id){
-		var tempId = counter;
-		arr.push({id: tempId,
+	if (fname.length >= 3 && lname.length >= 2) {
+		if(!id){
+			var tempId = counter;
+			arr.push({id: tempId,
+					fname: fname,
+					lname: lname});
+			var index = indexID(counter , arr);
+			counter++;
+			
+		} else {
+			var index = indexID(id,arr);
+			arr[index] = {id: id,
 				fname: fname,
-				lname: lname});
-		var index = indexID(counter , arr);
-		counter++;
-		
-	} else {
-		var index = indexID(id,arr);
-		arr[index] = {id: id,
-			fname: fname,
-			lname: lname}
+				lname: lname}
 
+		}
+		localStorage.setItem("array", JSON.stringify(arr));
+		reRenderForm();
+		reRenderContainer(arr[index]);
+	} else {
+		document.getElementById("errorTxt").style.display = "";
 	}
-	localStorage.setItem("array", JSON.stringify(arr));
-	reRenderForm();
-	reRenderContainer(arr[index]);
 }
 
 function update(updateElId){
@@ -94,24 +97,23 @@ function totalNumber(){
 
 function reRenderContainer(updateElId){
 	var template = templateSource("containerTemplate");
-	
+	totalNumber();
 	if(updateElId){
+		var numberPg = activPg(indexID(updateElId.id , arr))
 		var index = indexID(updateElId.id , arr);
 		var showArr=[];
 
-		for (var i = 0+5*activPg(indexID(updateElId.id , arr)); i < 5+5*activPg(indexID(updateElId.id , arr)); i++) {
+		for (var i = 0+5*numberPg; i < 5+5*numberPg; i++) {
 			if(arr[i]){
 				showArr.push(arr[i]);
 			}
 		}
 		var html = template({arr:showArr});
-		document.getElementById("container").innerHTML = html;
 		
-		totalNumber();
-		document.getElementById(activPg(indexID(updateElId.id , arr))+1+"pg").style.backgroundColor = "gray";
+		document.getElementById(numberPg+1+"pg").style.backgroundColor = "gray";
 	} else {
 		var html = template({arr:arr});
-		document.getElementById("container").innerHTML = html;
-		totalNumber();
 	}
+		document.getElementById("container").innerHTML = html;
+
 }
