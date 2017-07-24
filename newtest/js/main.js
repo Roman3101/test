@@ -7,15 +7,23 @@ if (localStorage.getItem("array") && localStorage.getItem("array") != "[]") {
 } else {
 	var counter = 1;
 }
-
+Handlebars.registerHelper("displayNone", function() {
+	return "none";
+});
 reRenderForm();
 reRenderContainer(arr[0]);
+
 
 function addElement() {
 	var id = document.getElementById("id").value;
 	var fname = document.getElementById("fname").value;
 	var lname = document.getElementById("lname").value;
+	
+	
 	if (fname.length >= 3 && lname.length >= 2) {
+		Handlebars.registerHelper("displayNone", function() {
+			return "none";
+		});
 		if(!id){
 			var tempId = counter;
 			arr.push({id: tempId,
@@ -32,11 +40,14 @@ function addElement() {
 
 		}
 		localStorage.setItem("array", JSON.stringify(arr));
-		reRenderForm();
+		
 		reRenderContainer(arr[index]);
 	} else {
-		document.getElementById("errorTxt").style.display = "";
+		Handlebars.registerHelper("displayNone", function() {
+			return "";
+		});
 	}
+	reRenderForm();
 }
 
 function update(updateElId){
