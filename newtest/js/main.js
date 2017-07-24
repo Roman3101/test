@@ -44,11 +44,12 @@ function update(updateElId){
 	arr[index].bgColor = true;
 	reRenderForm(arr[index]);
 	reRenderContainer(arr[index]);
-	arr[index].bgColor = "";
+	arr[index].bgColor = false;
 }
 
 function deleteElement(deleteElId){
 	var index = indexID(deleteElId , arr);
+	var numberPg = activPg(index)
 	if(arr[index+1]){
 		var temp = arr[index+1];
 	} else {
@@ -56,7 +57,9 @@ function deleteElement(deleteElId){
 	}
 	arr.splice(index , 1);
 	localStorage.setItem("array", JSON.stringify(arr));
-	reRenderContainer(temp);	
+	reRenderForm();
+	reRenderContainer(temp);
+	totalNumber(numberPg);
 }
 
 function templateSource(id){
@@ -84,20 +87,28 @@ function indexID(id,arr){
 	}
 }
 
-function totalNumber(){
+function totalNumber(numberPg){
 	var pgArray = [];
-	var quantityPages = Math.ceil(arr.length/5);
-	for (var i = 1; i <= quantityPages; i++) {
-		pgArray.push(i);
-	}
 	var template = templateSource("pagingTemplate");
-	var html = template({pgArray:pgArray});
-	document.getElementById("pagingСontainer").innerHTML = html;
+	var quantityPages = Math.ceil(arr.length/5);
+	if(quantityPages != 0){
+		var pgArray = [];
+		for (var i = 1; i <= quantityPages; i++) {
+			pgArray.push({i});
+		}
+		pgArray[numberPg].color = true;
+		
+		var html = template({pgArray:pgArray});
+		document.getElementById("pagingСontainer").innerHTML = html;
+		pgArray[numberPg].color = false;
+	} else {
+		var html = template({pgArray:pgArray});
+		document.getElementById("pagingСontainer").innerHTML = html;
+	}
 }
 
 function reRenderContainer(updateElId){
 	var template = templateSource("containerTemplate");
-	totalNumber();
 	if(updateElId){
 		var numberPg = activPg(indexID(updateElId.id , arr))
 		var index = indexID(updateElId.id , arr);
@@ -109,11 +120,9 @@ function reRenderContainer(updateElId){
 			}
 		}
 		var html = template({arr:showArr});
-		
-		document.getElementById(numberPg+1+"pg").style.backgroundColor = "gray";
+		totalNumber(numberPg);
 	} else {
 		var html = template({arr:arr});
 	}
 		document.getElementById("container").innerHTML = html;
-
 }

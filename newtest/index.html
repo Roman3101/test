@@ -39,11 +39,11 @@
 			
 	</script>
 	<script id="pagingTemplate" type="text/x-handlebars-template">
-			<div id="paging">
-				{{#each pgArray}}
-					<button id="{{this}}pg" onclick="reRenderContainer(arr[-5+5*{{this}}])">{{this}}</button>
-				{{/each}}
-			</div>
+		<div id="paging">
+			{{#each pgArray}}
+				<button style="{{#if this.color}} background-color: gray {{/if}}" onclick="reRenderContainer(arr[-5+5*{{this.i}}]), reRenderForm()">{{this.i}}</button>
+			{{/each}}
+		</div>
 	</script>
 	
 </head>
