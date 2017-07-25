@@ -7,9 +7,7 @@ if (localStorage.getItem("array") && localStorage.getItem("array") != "[]") {
 } else {
 	var counter = 1;
 }
-Handlebars.registerHelper("displayNone", function() {
-	return "none";
-});
+
 reRenderForm();
 reRenderContainer(arr[0]);
 
@@ -19,11 +17,7 @@ function addElement() {
 	var fname = document.getElementById("fname").value;
 	var lname = document.getElementById("lname").value;
 	
-	
 	if (fname.length >= 3 && lname.length >= 2) {
-		Handlebars.registerHelper("displayNone", function() {
-			return "none";
-		});
 		if(!id){
 			var tempId = counter;
 			arr.push({id: tempId,
@@ -40,14 +34,12 @@ function addElement() {
 
 		}
 		localStorage.setItem("array", JSON.stringify(arr));
-		
+		reRenderForm();
 		reRenderContainer(arr[index]);
 	} else {
-		Handlebars.registerHelper("displayNone", function() {
-			return "";
-		});
+		reRenderForm({error: true,fname: fname,lname: lname});
 	}
-	reRenderForm();
+
 }
 
 function update(updateElId){

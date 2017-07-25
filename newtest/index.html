@@ -11,7 +11,7 @@
 	<script id="formTemplate" type="text/x-handlebars-template">
 		<form action="">
 			<input type="hidden" id="id" value="{{id}}"></input>
-			<span id="errorTxt" style=" display:{{displayNone}}; color:red" >ERROR</span>
+			<span id="errorTxt" style="{{#unless error}}display:none;{{/unless}} color:red" >ERROR</span>
 			<div>
 				<label for="fname">First name</label>
 				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}"></input>
