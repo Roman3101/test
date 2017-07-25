@@ -11,14 +11,14 @@
 	<script id="formTemplate" type="text/x-handlebars-template">
 		<form action="">
 			<input type="hidden" id="id" value="{{id}}"></input>
-			<span id="errorTxt" style="{{#unless error}}display:none;{{/unless}} color:red" >{{error}}</span>
+			<span id="errorTxt" style="{{#unless error}}display:none;{{/unless}} color:red" >ERROR {{error}}</span>
 			<div>
 				<label for="fname">First name</label>
-				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}"  style="{{#if errorFname}}border-color:red;{{/if}} "></input>
+				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}"  style="{{errorMessage 'fname' field}}"></input>
 			</div>
 			<div>
 				<label for="lname">Last Name</label>
-				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}" style="{{#if errorLname}}border-color:red;{{/if}} "></input>
+				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}" style="{{errorMessage 'lname' field}}"></input>
 			</div>
 			<div>
 				<input type="button"  value="{{#if id}} Ok {{else}}  Add  {{/if}}"  id="clickBtn" onclick="addElement()"></input>
