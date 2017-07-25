@@ -38,13 +38,13 @@ function addElement() {
 		reRenderContainer(arr[index]);
 	} else { 
 		if (fname.length < 3) {
-			reRenderForm({error: true,errorFname:true,fname: fname,lname: lname});
+			reRenderForm({error: "ERROR first name",errorFname: true, fname: fname,	lname: lname});
 		} 
 		if (lname.length < 2){ 
-			reRenderForm({error: true,errorLname:true,fname: fname,lname: lname});
+			reRenderForm({error: "ERROR last name",errorLname: true, fname: fname,	lname: lname});
 		}
 		if (fname.length < 3 && lname.length < 2) {
-			reRenderForm({error: true,errorFname: true,errorLname:true,fname: fname,lname: lname});
+			reRenderForm({error: "ERROR first name and last name",errorFname: true, errorLname: true, fname: fname,	lname: lname});
 		}
 	}
 
