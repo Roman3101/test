@@ -12,13 +12,15 @@
 		<form action="">
 			<input type="hidden" id="id" value="{{id}}"></input>
 			<span id="errorTxt" style="{{#unless error}}display:none;{{/unless}} color:red" >ERROR</span>
+			<span id="errorTxt" style="{{#unless errorFname}}display:none;{{/unless}} color:red" >first name</span>
+			<span id="errorTxt" style="{{#unless errorLname}}display:none;{{/unless}} color:red" >last name</span>
 			<div>
 				<label for="fname">First name</label>
-				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}"></input>
+				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}"  style="{{#if errorFname}}border-color:red;{{/if}} "></input>
 			</div>
 			<div>
 				<label for="lname">Last Name</label>
-				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}"></input>
+				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}" style="{{#if errorLname}}border-color:red;{{/if}} "></input>
 			</div>
 			<div>
 				<input type="button"  value="{{#if id}} Ok {{else}}  Add  {{/if}}"  id="clickBtn" onclick="addElement()"></input>

@@ -36,8 +36,16 @@ function addElement() {
 		localStorage.setItem("array", JSON.stringify(arr));
 		reRenderForm();
 		reRenderContainer(arr[index]);
-	} else {
-		reRenderForm({error: true,fname: fname,lname: lname});
+	} else { 
+		if (fname.length < 3) {
+			reRenderForm({error: true,errorFname:true,fname: fname,lname: lname});
+		} 
+		if (lname.length < 2){ 
+			reRenderForm({error: true,errorLname:true,fname: fname,lname: lname});
+		}
+		if (fname.length < 3 && lname.length < 2) {
+			reRenderForm({error: true,errorFname: true,errorLname:true,fname: fname,lname: lname});
+		}
 	}
 
 }
@@ -127,5 +135,5 @@ function reRenderContainer(updateElId){
 	} else {
 		var html = template({arr:arr});
 	}
-		document.getElementById("container").innerHTML = html;
+	document.getElementById("container").innerHTML = html;
 }
