@@ -8,11 +8,11 @@ if (localStorage.getItem("array") && localStorage.getItem("array") != "[]") {
 	var counter = 1;
 }
 
-Handlebars.registerHelper('errorMessage', function(text,field) {
-	if(field){
-		for (var i = 0; i < field.length; i++) {
-			if (field[i] == text) {
-				return "border-color:red"
+Handlebars.registerHelper('errorMessage', function(text,arrError) {
+	if(arrError){
+		for (var i = 0; i < arrError.length; i++) {
+			if (arrError[i].field == text) {
+				return true
 			}
 		}
 	}
@@ -47,18 +47,15 @@ function addElement() {
 		reRenderForm();
 		reRenderContainer(arr[index]);
 	} else {
-		var error=[];
-		var field=[];
+		var arrError = [];
 		if (fname.length < 3) {
-			error.push('first name should be more that 3 charachters');
-			field.push('fname');
+			arrError.push({field: 'fname', error: 'First name should be more that 3 charachters.'});
 		} 
-		if (lname.length < 2){ 
-			error.push('last name should be more that 2 charachters');
-			field.push('lname');
+		if (lname.length < 2){
+			arrError.push({field: 'lname', error: 'Last name should be more that 2 charachters.'});
 		}
 		
-		reRenderForm({error: error,field:field, fname: fname, lname: lname});
+		reRenderForm({arrError: arrError, fname: fname, lname: lname});
 	}
 
 }
