@@ -1,8 +1,11 @@
-// localStorage.clear();
+ // localStorage.clear();
+// console.log(window.location);
+var titlePg = document.title;
 var arr = [];
 
-if (localStorage.getItem("array") && localStorage.getItem("array") != "[]") {
-	arr = JSON.parse(localStorage.getItem("array"));
+if (localStorage.getItem(titlePg+"array") && localStorage.getItem(titlePg+"array") != "[]") {
+	arr = JSON.parse(localStorage.getItem(titlePg+"array"));
+	console.log(arr);
 	var counter = +arr[arr.length-1].id + 1;
 } else {
 	var counter = 1;
@@ -17,46 +20,71 @@ Handlebars.registerHelper('errorMessage', function(text,arrError) {
 		}
 	}
 });
-
 reRenderForm();
 reRenderContainer(arr[0]);
 
 
 function addElement() {
-	var id = document.getElementById("id").value;
-	var fname = document.getElementById("fname").value;
-	var lname = document.getElementById("lname").value;
-	
-	if (fname.length >= 3 && lname.length >= 2) {
-		if(!id){
-			var tempId = counter;
-			arr.push({id: tempId,
+	if(titlePg == "index.html"){
+		var id = document.getElementById("id").value;
+		var fname = document.getElementById("fname").value;
+		var lname = document.getElementById("lname").value;
+		
+		if (fname.length >= 3 && lname.length >= 2) {
+			if(!id){
+				var tempId = counter;
+				arr.push({id: tempId,
+						fname: fname,
+						lname: lname});
+				var index = indexID(counter , arr);
+				counter++;
+			} else {
+				var index = indexID(id,arr);
+				arr[index] = {id: id,
 					fname: fname,
-					lname: lname});
-			var index = indexID(counter , arr);
-			counter++;
-			
+					lname: lname}
+			}
+			localStorage.setItem(titlePg+"array", JSON.stringify(arr));
+			reRenderForm();
+			reRenderContainer(arr[index]);
 		} else {
-			var index = indexID(id,arr);
-			arr[index] = {id: id,
-				fname: fname,
-				lname: lname}
-
+			var arrError = [];
+			if (fname.length < 3) {
+				arrError.push({field: 'fname', error: 'First name should be more that 3 charachters.'});
+			} 
+			if (lname.length < 2){
+				arrError.push({field: 'lname', error: 'Last name should be more that 2 charachters.'});
+			}
+			reRenderForm({arrError: arrError, fname: fname, lname: lname});
 		}
-		localStorage.setItem("array", JSON.stringify(arr));
-		reRenderForm();
-		reRenderContainer(arr[index]);
-	} else {
-		var arrError = [];
-		if (fname.length < 3) {
-			arrError.push({field: 'fname', error: 'First name should be more that 3 charachters.'});
-		} 
-		if (lname.length < 2){
-			arrError.push({field: 'lname', error: 'Last name should be more that 2 charachters.'});
+	}
+	if(titlePg == "untitled.html"){
+		var id = document.getElementById("id").value;
+		var fname = document.getElementById("fname").value;
+		if (fname.length >= 3){
+			if(!id){
+				var tempId = counter;
+				arr.push({id: tempId,
+						fname: fname});
+				var index = indexID(counter , arr);
+				counter++;	
+			} else {
+				var index = indexID(id,arr);
+				arr[index] = {id: id,
+					fname: fname}
+			}
+			localStorage.setItem(titlePg+"array", JSON.stringify(arr));
+			reRenderForm();
+			reRenderContainer(arr[index]);
+		} else {
+			var arrError = [];
+			if (fname.length < 3) {
+				arrError.push({field: 'fname', error: 'First name should be more that 3 charachters.'});
+			}
+			reRenderForm({arrError: arrError, fname: fname, lname: lname});
 		}
 		
-		reRenderForm({arrError: arrError, fname: fname, lname: lname});
-	}
+	} 
 
 }
 
@@ -65,7 +93,7 @@ function update(updateElId){
 	arr[index].bgColor = true;
 	reRenderForm(arr[index]);
 	reRenderContainer(arr[index]);
-	arr[index].bgColor = false;
+	delete arr[index].bgColor;
 }
 
 function deleteElement(deleteElId){
@@ -77,7 +105,7 @@ function deleteElement(deleteElId){
 		var temp = arr[index-1];
 	}
 	arr.splice(index , 1);
-	localStorage.setItem("array", JSON.stringify(arr));
+	localStorage.setItem(titlePg+"array", JSON.stringify(arr));
 	reRenderForm();
 	reRenderContainer(temp);
 	totalNumber(numberPg);

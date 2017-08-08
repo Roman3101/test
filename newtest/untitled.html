@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>index.html</title>
+	<title>untitled.html</title>
 	<link rel="stylesheet" href="css/main.css">
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
@@ -13,12 +13,8 @@
 			<input type="hidden" id="id" value="{{id}}"></input>
 			<span id="errorTxt" style="{{#unless arrError}}display:none;{{/unless}} color:red" >ERROR! {{#each arrError}} {{error}} {{/each}}</span>
 			<div>
-				<label for="fname">First name</label>
-				<input type="text"  id="fname" placeholder="Your first name.." value="{{fname}}"  style="{{#if (errorMessage 'fname' arrError)}}border-color:red;{{/if}}"></input>
-			</div>
-			<div>
-				<label for="lname">Last Name</label>
-				<input type="text"  id="lname" placeholder="Your last name.." value="{{lname}}" style="{{#if (errorMessage 'lname' arrError)}}border-color:red;{{/if}}"></input>
+				<label for="fname">book</label>
+				<input type="text"  id="fname" placeholder="Your book" value="{{fname}}"  style="{{#if (errorMessage 'fname' arrError)}}border-color:red;{{/if}}"></input>
 			</div>
 			<div>
 				<input type="button"  value="{{#if id}} Ok {{else}}  Add  {{/if}}"  id="clickBtn" onclick="addElement()"></input>
@@ -31,7 +27,6 @@
 		{{#each arr}}
 			<div id="{{this.id}}" style="{{#if this.bgColor}} background-color: red {{/if}}">
 				<span>{{this.fname}}</span>
-				<span>{{this.lname}}</span>
 				<button onclick="deleteElement({{this.id}})">Delete</button>
 				<button onclick="update({{this.id}})">Update</button>
 			</div>
@@ -45,8 +40,7 @@
 			{{/each}}
 		</div>
 	</script>
-	
-	
+		
 </head>
 <body>
 	<div id="form"></div>
